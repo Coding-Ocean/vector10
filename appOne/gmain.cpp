@@ -1,86 +1,75 @@
 #include"libOne.h"
-struct VEC {
-    float x = 0, y = 0;
-    float m = 1;
-};
 void gmain() {
+    float ax, ay;
+    float bx, by;
     float a_angle = -15;
     float b_angle = 15;
-    VEC a, b, c;
-    float angleBetween = 0;
-    float sinAngle = 0;
     float cosAngle = 0;
+    float sinAngle = 0;
+    float angleBetween = 0;
     int state = 0;
-    float bm = 1;
     angleMode(DEGREES);
     window(1000, 1000);
     while (notQuit) {
         clear(0, 80, 0);
-        mathAxis(bm + 0.5f, 255);
-
+        mathAxis(1.5f, 255);
+        //ベクトルａの回転
         if (isTrigger(KEY_A))a_angle += 15;
         if (isTrigger(KEY_D))a_angle += -15;
-        a.x = cos(a_angle);
-        a.y = sin(a_angle);
-
+        ax = cos(a_angle);
+        ay = sin(a_angle);
+        //ベクトルｂの回転
         if (isTrigger(MOUSE_LBUTTON))b_angle += 15;
         if (isTrigger(MOUSE_RBUTTON))b_angle += -15;
-        b.x = cos(b_angle) * bm;
-        b.y = sin(b_angle) * bm;
+        bx = cos(b_angle);
+        by = sin(b_angle);
         if (isPress(MOUSE_MBUTTON)) {
-            b.x = mathMouseX;
-            b.y = mathMouseY;
-            float mag = sqrt(b.x * b.x + b.y * b.y);
-            b.x /= mag;
-            b.y /= mag;
-            b.x *= bm;
-            b.y *= bm;
+            bx = mathMouseX;
+            by = mathMouseY;
+            float mag = sqrt(bx * bx + by * by);
+            bx /= mag;
+            by /= mag;
         }
         //内積
-        cosAngle = a.x * b.x + a.y * b.y;
-        c.x = a.x * cosAngle;
-        c.y = a.y * cosAngle;
-        angleBetween = acos(cosAngle / bm);
+        cosAngle = ax * bx + ay * by;
+        angleBetween = acos(cosAngle);
         //外積
-        sinAngle = a.x * b.y - a.y * b.x;
+        sinAngle = ax * by - ay * bx;
         if (sinAngle < 0) {
             angleBetween = -angleBetween;
         }
 
-        //a_angle += angleBetween * 0.05f;
-
-
-
+        //a_angle += angleBetween * 0.01f;
+        
+        //ベクトルｂ描画
         strokeWeight(10);
         textSize(50);
         stroke(180);
-        mathArrow(0, 0, b.x, b.y);
+        mathArrow(0, 0, bx, by);
         fill(180);
-        mathText("b", b.x, b.y);
+        mathText("b", bx, by);
+        //ベクトルａ描画
         stroke(250);
-        mathArrow(0, 0, a.x, a.y);
+        mathArrow(0, 0, ax, ay);
         fill(250);
-        mathText("a", a.x, a.y);
-
-
-        //strokeWeight(280);
-        //stroke(0, 60, 00);
-        //fill(0, 0, 0, 0);
-        //rect(0, 0, width, height);
+        mathText("a", ax, ay);
+        //情報描画
         if (isTrigger(KEY_SPACE)) {
             ++state %= 4;
         }
         if (state == 1 || state == 2) {
+            float cx = ax * cosAngle;
+            float cy = ay * cosAngle;
             strokeWeight(10);
             stroke(150, 190, 255);
-            mathLine(0, 0, c.x, c.y);
+            mathLine(0, 0, cx, cy);
             stroke(255, 190, 190);
-            mathLine(c.x, c.y, b.x, b.y);
+            mathLine(cx, cy, bx, by);
         }
         if (state == 2) {
             textSize(50);
             fill(150, 190, 255);
-            text((let)"cosθ*am*bm = ax * bx + ay * by = " + cosAngle, 0, 50);
+            text((let)"cosθ = ax * bx + ay * by = " + cosAngle, 0, 50);
             fill(255, 190, 190);
             text((let)"sinθ = ax * by - ay * bx = " + sinAngle, 0, 100);
             fill(250);
