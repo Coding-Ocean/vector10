@@ -28,7 +28,7 @@ void getInput();
 void getInputState();
 void getJoy();
 void getJoyXbox();
-int inValue( INPUT_CODE inCode );
+int inValue( enum INPUT_CODE inCode );
 int isPress( INPUT_CODE inCode );
 int isTrigger( INPUT_CODE inCode );
 

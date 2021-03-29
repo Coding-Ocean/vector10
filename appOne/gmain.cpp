@@ -9,12 +9,12 @@ void gmain() {
     float cosAngle = 0;
     float sinAngle = 0;
     float angleBetween = 0;
-    //状態
+    //表示切り替え用状態
     int state = 0;
     angleMode(DEGREES);
     window(1000, 1000);
     while (notQuit) {
-        clear(0, 80, 0);
+        clear(0, 50, 0);
         mathAxis(1.5f, 255);
         //ベクトルａの回転
         if (isTrigger(KEY_A))a_angle += 15;
@@ -22,12 +22,12 @@ void gmain() {
         ax = cos(a_angle);
         ay = sin(a_angle);
         //ベクトルｂの回転
-        if (isTrigger(MOUSE_LBUTTON))b_angle += 15;
-        if (isTrigger(MOUSE_RBUTTON))b_angle += -15;
+        if (isTrigger(KEY_J))b_angle += 15;
+        if (isTrigger(KEY_L))b_angle += -15;
         bx = cos(b_angle);
         by = sin(b_angle);
         //ベクトルｂをマウス位置にする
-        if (isPress(MOUSE_MBUTTON)) {
+        if (isPress(MOUSE_LBUTTON)) {
             bx = mathMouseX;
             by = mathMouseY;
         }
@@ -53,11 +53,12 @@ void gmain() {
         mathArrow(0, 0, ax, ay);
         fill(250);
         mathText("a", ax, ay);
+
         //情報描画
         if (isTrigger(KEY_SPACE)) {
             ++state %= 4;
         }
-        if (state == 1 || state == 2) {
+        if (state >= 1) {
             //底辺と高さ描画
             float cx = ax * cosAngle;
             float cy = ay * cosAngle;
@@ -67,19 +68,20 @@ void gmain() {
             stroke(255, 190, 190);
             mathLine(cx, cy, bx, by);
         }
-        if (state == 2) {
+        if (state >= 2) {
             textSize(50);
             fill(150, 190, 255);
             text((let)"cosθ = ax * bx + ay * by = " + cosAngle, 0, 50);
             fill(255, 190, 190);
             text((let)"sinθ = ax * by - ay * bx = " + sinAngle, 0, 100);
-            fill(250);
-            text((let)"θ = " + angleBetween, 0, 150);
         }
         if (state == 3) {
+            //なす角描画
+            stroke(255, 255, 200);
+            mathArc(atan2(ay, ax), angleBetween, 0.1f);
             textSize(50);
-            fill(250);
-            text((let)"θ = " + angleBetween, 0, 150);
+            fill(255,255,200);
+            text((let)"θ = " + round(angleBetween), 0, 150);
         }
     }
 }
