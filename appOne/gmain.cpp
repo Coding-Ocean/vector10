@@ -7,6 +7,7 @@ void gmain() {
     float bx, by;
     float a_angle = -15;
     float b_angle = 30;
+    float inc_dec = 15;
     //内積、外積、なす角
     float dotProduct = 0;
     float crossProduct = 0;
@@ -17,13 +18,13 @@ void gmain() {
         clear(0, 50, 0);
         mathAxis(1.5f, 255);
         //ベクトルａの回転
-        if (isTrigger(KEY_A))a_angle += 15;
-        if (isTrigger(KEY_D))a_angle += -15;
+        if (isTrigger(KEY_A))a_angle += inc_dec;
+        if (isTrigger(KEY_D))a_angle += -inc_dec;
         ax = cos(a_angle);
         ay = sin(a_angle);
         //ベクトルｂの回転
-        if (isTrigger(KEY_LEFT))b_angle += 15;
-        if (isTrigger(KEY_RIGHT))b_angle += -15;
+        if (isTrigger(KEY_LEFT))b_angle += inc_dec;
+        if (isTrigger(KEY_RIGHT))b_angle += -inc_dec;
         bx = cos(b_angle);
         by = sin(b_angle);
         //ベクトルｂをマウス位置にする
