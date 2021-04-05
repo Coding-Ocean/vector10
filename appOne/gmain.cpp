@@ -1,6 +1,6 @@
 #include"libOne.h"
 void gmain() {
-    window(1040, 1040);
+    window(1000, 1000);
     angleMode(DEGREES);
     //ƒxƒNƒgƒ‹‚C‚‚
     float ax, ay;
@@ -13,7 +13,7 @@ void gmain() {
     float crossProduct = 0;
     float angleBetween = 0;
     //•\Ž¦Ø‚è‘Ö‚¦—pó‘Ô
-    int state = 0;
+    int state = 3;
     while (notQuit) {
         clear(0, 50, 0);
         mathAxis(1.5f, 255);
@@ -39,9 +39,7 @@ void gmain() {
         //‚È‚·Šp
         angleBetween = atan2(crossProduct, dotProduct);
         //ƒxƒNƒgƒ‹‚‚ª‚‚‚ð’Ç‚¢‚©‚¯‚é
-        if (isPress(KEY_Z)) {
-            a_angle += angleBetween * 0.1f;
-        }
+        if (isPress(KEY_Z)) { a_angle += angleBetween * 0.1f; }
         //ƒxƒNƒgƒ‹‚‚•`‰æ
         strokeWeight(10);
         textSize(50);
@@ -60,29 +58,33 @@ void gmain() {
             ++state %= 4;
         }
         if (state >= 1) {
-            //’ê•Ó‚Æ‚‚³•`‰æ
+            //’ê•Ó•`‰æ
             float cx = ax * dotProduct;
             float cy = ay * dotProduct;
             strokeWeight(10);
             stroke(150, 190, 255);
             mathLine(0, 0, cx, cy);
+            //‚‚³•`‰æiƒxƒNƒgƒ‹‚‚ð‚X‚O‹‰ñ“]‚³‚¹AŠOÏ‚ðŠ|‚¯‚éj
+            float dx = -ay * crossProduct;
+            float dy = ax * crossProduct;
             stroke(255, 190, 190);
-            mathLine(cx, cy, bx, by);
+            mathLine(cx, cy, cx + dx, cy + dy);
         }
         if (state >= 2) {
+            //Ž®‚Æ’l•`‰æ
             textSize(50);
             fill(150, 190, 255);
-            text((let)"“àÏ: ax * bx + ay * by = " + dotProduct, 0, 50);
+            text((let)"dot:   ax * bx + ay * by = " + dotProduct, 0, 50);
             fill(255, 190, 190);
-            text((let)"ŠOÏ: ax * by - ay * bx = " + crossProduct, 0, 100);
+            text((let)"cross: ax * by - ay * bx = " + crossProduct, 0, 100);
         }
         if (state >= 3) {
             //‚È‚·Šp•`‰æ
             stroke(255, 255, 200);
             mathArc(a_angle, angleBetween, 0.1f);
             textSize(50);
-            fill(255,255,200);
-            text((let)"ƒÆ = " + round(angleBetween), 0, 150);
+            fill(255, 255, 200);
+            text((let)"atan2(cross,dot) = " + round(angleBetween), 0, 150);
         }
     }
 }
